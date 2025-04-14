@@ -4,6 +4,33 @@ import os
 import datetime
 import subprocess
 import asyncio
+from discord.ext import audiorec
+
+recorder = audiorec.Recorder()
+
+@recorder.on_audio
+async def record_audio(vc: discord.VoiceClient, channel: discord.VoiceChannel):
+    if channel.name == "休憩室":
+        print("🚫 休憩室なので録音をスキップします。")
+        await vc.disconnect()
+        return
+
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{channel.name}_{timestamp}.wav".replace(" ", "_")
+    filepath = os.path.join("recordings", filename)
+
+    os.makedirs("recordings", exist_ok=True)
+
+    print(f"🎙️ 録音開始: {filepath}")
+
+    # 🔥 VCにレコーダーをアタッチして録音を開始
+    recorder.attach_to(vc)
+
+    # ⏱️ 10秒間録音（必要に応じて調整）
+    await asyncio.sleep(10)
+
+    print(f"🎧 録音終了: {filepath}")
+    await vc.disconnect()
 
 # ========================
 # Botの初期化
