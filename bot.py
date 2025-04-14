@@ -15,7 +15,7 @@ async def on_ready():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if after.channel and len(after.channel.members) >= 2:
+    if after.channel and len(after.channel.members) >= 1:
         voice_channel = after.channel
         if bot.voice_clients and any(vc.channel == voice_channel for vc in bot.voice_clients):
             return
