@@ -1,4 +1,4 @@
+
 discord.py[voice]==2.3.2
 python-dotenv==1.0.0
-https://github.com/Androz2091/discord-ext-audio/archive/refs/heads/main.zip
-
+git+https://github.com/imayhaveborkedit/discord-ext-voice-recv
