@@ -1,8 +1,8 @@
 FROM python:3.11-slim
 
-# ffmpegと依存パッケージをインストール
+# git も ffmpeg も build-essential も一緒に入れる
 RUN apt-get update && \
-    apt-get install -y ffmpeg build-essential && \
+    apt-get install -y git ffmpeg build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
