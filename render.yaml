@@ -1,9 +1,6 @@
 services:
   - type: web
     name: discord-meeting-bot
-    env: python
+    env: docker
     plan: free
-    buildCommand: |
-      apt-get update && apt-get install -y ffmpeg
-      pip install -r requirements.txt
-    startCommand: python bot.py
+    dockerfilePath: ./Dockerfile
