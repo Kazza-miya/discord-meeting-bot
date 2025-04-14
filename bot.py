@@ -42,4 +42,8 @@ async def leave(ctx):
     else:
         await ctx.send("ボイスチャンネルに接続していません。")
 
-bot.run("YOUR_DISCORD_TOKEN")
+from dotenv import load_dotenv
+
+load_dotenv()
+bot.run(os.getenv("DISCORD_TOKEN"))
+
