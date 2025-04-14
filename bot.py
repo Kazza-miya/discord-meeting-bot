@@ -1,9 +1,20 @@
 import discord
 from discord.ext import commands
-from discord.ext.audio import AudioClient
 import os
 import datetime
+import asyncio
+from discord.ext import audio
 
+recorder = audio.Recorder()
+
+@recorder.on_audio
+async def on_audio_frame(sink, user, data):
+    filename = f"recordings/{user.id}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.wav"
+    with open(filename, "wb") as f:
+        f.write(data.pcm)
+    print(f"🎙️ {user.display_name} の音声を録音: {filename}")
+
+# Botの初期化
 intents = discord.Intents.default()
 intents.message_content = True
 intents.voice_states = True
@@ -26,21 +37,8 @@ async def on_voice_state_update(member, before, after):
             return
         try:
             vc = await voice_channel.connect()
-            audio = AudioClient(vc)
-
-            # 録音ディレクトリ
-            os.makedirs("recordings", exist_ok=True)
-
-            # 音声データを保存
-            @audio.on("data")
-            async def on_audio_data(user, data):
-                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-                filename = f"recordings/{user.id}_{timestamp}.pcm"
-                with open(filename, "ab") as f:
-                    f.write(data)
-                print(f"🎙️ {user.display_name} の音声を録音中: {filename}")
-
-            await audio.listen()  # 録音開始（イベントをトリガー）
+            recorder.attach_to(vc)
+            print(f"🎤 {voice_channel.name} に接続しました。録音開始")
         except Exception as e:
             print(f"接続エラー: {e}")
 
