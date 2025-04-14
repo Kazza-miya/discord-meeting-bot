@@ -1,4 +1,4 @@
-
-discord.py[voice]==2.3.2
+# discord.pyのバージョン指定を削除
+discord.py[voice]  # バージョン指定なし
 python-dotenv==1.0.0
 git+https://github.com/imayhaveborkedit/discord-ext-voice-recv
